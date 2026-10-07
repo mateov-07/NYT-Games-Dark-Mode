@@ -11,13 +11,13 @@ export const defaultColorPanelStorageKey = "defaultColorPanelOnOpen";
 export const lastUsedOptionValue = "last-used";
 
 // GitHub links for the extension's repository and its releases page
-export const githubUrl = "https://github.com/TalkingBlock/NYT-Games-Dark-Mode";
-export const changelogUrl = "https://github.com/TalkingBlock/NYT-Games-Dark-Mode/releases";
+export const githubUrl = "https://github.com/mateov-07/NYT-Games-Dark-Mode";
+export const changelogUrl = "https://github.com/mateov-07/NYT-Games-Dark-Mode/releases";
 
 // Notes shown in the changelog dialog, updated with every release
 export const changelogNotes = [
-    "Implemented help popup for custom color elements",
-    "Added 5 sudoku, 5 wordle and 1 connections elements to custom colors page"
+    "Updated README.md",
+    "Changed extension name and description"
 ];
 
 // Email address that bug reports, feedback and questions are sent to

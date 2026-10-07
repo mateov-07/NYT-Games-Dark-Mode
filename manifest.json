@@ -1,7 +1,7 @@
 {
-  "name": "NYT Games Dark Mode",
-  "description": "Adds a toggleable dark mode to NYT Games :D",
-  "version": "0.8.5",
+  "name": "Dark Mode for NYT Games",
+  "description": "Adds a toggleable dark mode to all NYT Games plus color customization options for Crosswords, Sudoku, Wordle and Connections.",
+  "version": "0.8.5.1",
   "manifest_version": 3,
   "permissions": ["scripting", "activeTab", "storage", "clipboardRead", "clipboardWrite"],
   "action": {

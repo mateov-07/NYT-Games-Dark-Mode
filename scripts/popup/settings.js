@@ -255,7 +255,7 @@ function readActiveGameUrl() {
 // Builds the details block at the bottom of the bug report
 function buildDetailBlock(details) {
     const lines = [
-        "--- please keep the details below ---",
+        "--- DO NOT TOUCH, KEEP THE BELOW DETAILS  ---",
         `Version: v${details.version}`,
         `Browser: ${details.browser}`,
         `System: ${details.system}`
@@ -268,7 +268,7 @@ function buildDetailBlock(details) {
 
 // Packs the bug report into a mail link addressed to the support email
 function buildMailtoUrl(version, reportBody) {
-    const subject = `NYT Games Dark Mode v${version} - bug report`;
+    const subject = `Dark Mode for NYT Games v${version} - bug report`;
     return `mailto:${supportEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(reportBody)}`;
 }
 

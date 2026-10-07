@@ -322,7 +322,7 @@ function saveEditedPreset(modal) {
     const presetName = popupState.activePresets[panelName];
     if (!customPresetNames.includes(presetName)) return {error: "Only custom presets can be renamed."};
     const hex = normalizeHexColor(modal.presetColor.value);
-    if (!hex) return {error: "That is not a valid hex color. Use six characters, for example 8FBCE8."};
+    if (!hex) return {error: "Invalid Hexcode. Use 6 characters from 0-9 and/or A-F."};
     const typedName = modal.presetName.value.trim().slice(0, presetNameMaxLength);
     popupState.presetMeta[panelName][presetName] = {
         name: typedName || presetLabels[presetName],
