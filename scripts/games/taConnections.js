@@ -1,3 +1,6 @@
+// Provides dark mode functionality for The Athletic Connections
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableTAConnectionsDarkMode() {
     const imgURL_Stats = chrome.runtime.getURL("imgs/sports-connections-stats.png");
     const taConnectionsCSS = `
@@ -167,6 +170,7 @@ function enableTAConnectionsDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableTAConnectionsDarkMode() {
     const styleElement = document.getElementById("taconnectionsstyle");
     if (styleElement) {
@@ -174,6 +178,7 @@ function disableTAConnectionsDarkMode() {
     }
 }
 
+// Reads the athletic connections dm switch, adds/removes the stylesheet
 function syncTAConnectionsDarkMode() {
     chrome.storage.sync.get(["taConnectionsDarkModeEnabled", "miscMasterEnabled"], function(data) {
         const shouldBeEnabled = data.miscMasterEnabled !== false && Boolean(data.taConnectionsDarkModeEnabled);
@@ -186,16 +191,19 @@ function syncTAConnectionsDarkMode() {
     });
 }
 
+// Catches the popup flipping the athletic connections toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableTAConnectionsDarkMode" || message.action === "syncDarkModeState") {
         syncTAConnectionsDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("taConnectionsDarkModeEnabled" in changes || "miscMasterEnabled" in changes)) {
         syncTAConnectionsDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncTAConnectionsDarkMode();

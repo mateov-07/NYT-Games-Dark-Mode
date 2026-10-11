@@ -1,3 +1,6 @@
+// Provides dark mode functionality for the Wordle Archive
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableWordleArchiveDarkMode() {
     const svgURL_DateArrow = chrome.runtime.getURL("svgs/date-picker-arrow.svg");
     const wordleArchiveCSS = `
@@ -255,6 +258,7 @@ function enableWordleArchiveDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableWordleArchiveDarkMode() {
     const styleElement = document.getElementById("wordlearchivestyle");
     if (styleElement) {
@@ -262,6 +266,7 @@ function disableWordleArchiveDarkMode() {
     }
 }
 
+// Reads the wordle archive dm switch, adds/removes the stylesheet
 function syncWordleArchiveDarkMode() {
     chrome.storage.sync.get(["wordleArchiveDarkModeEnabled", "archivesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.archivesMasterEnabled !== false && Boolean(data.wordleArchiveDarkModeEnabled);
@@ -274,16 +279,19 @@ function syncWordleArchiveDarkMode() {
     });
 }
 
+// Catches the popup flipping the wordle archive toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableWordleArchiveDarkMode" || message.action === "syncDarkModeState") {
         syncWordleArchiveDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("wordleArchiveDarkModeEnabled" in changes || "archivesMasterEnabled" in changes)) {
         syncWordleArchiveDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncWordleArchiveDarkMode();

@@ -1,3 +1,6 @@
+// Provides dark mode functionality for Crossword Statistics
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableCrosswordStatsDarkMode() {
     const imgURL_UpsellStats = chrome.runtime.getURL("imgs/upsell_stats.png");
     const crosswordStatsCSS = `
@@ -249,6 +252,7 @@ function enableCrosswordStatsDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableCrosswordStatsDarkMode() {
     const styleElement = document.getElementById("crosswordstatsstyle");
     if (styleElement) {
@@ -256,6 +260,7 @@ function disableCrosswordStatsDarkMode() {
     }
 }
 
+// Reads the statistics dm switch, adds/removes the stylesheet
 function syncCrosswordStatsDarkMode() {
     chrome.storage.sync.get(["crosswordStatsDarkModeEnabled", "miscMasterEnabled"], function(data) {
         const shouldBeEnabled = data.miscMasterEnabled !== false && Boolean(data.crosswordStatsDarkModeEnabled);
@@ -268,16 +273,19 @@ function syncCrosswordStatsDarkMode() {
     });
 }
 
+// Catches the popup flipping the statistics toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableCrosswordStatsDarkMode" || message.action === "syncDarkModeState") {
         syncCrosswordStatsDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("crosswordStatsDarkModeEnabled" in changes || "miscMasterEnabled" in changes)) {
         syncCrosswordStatsDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncCrosswordStatsDarkMode();

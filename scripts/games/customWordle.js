@@ -1,3 +1,6 @@
+// Provides dark mode functionality for Custom Wordle
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableCustomWordleDarkMode() {
     const imgURL_Hint1 = chrome.runtime.getURL("imgs/cywp-hint-1.png");
     const imgURL_Hint2 = chrome.runtime.getURL("imgs/cywp-hint-2.png");
@@ -323,6 +326,7 @@ function enableCustomWordleDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableCustomWordleDarkMode() {
     const styleElement = document.getElementById("customwordlestyle");
     if (styleElement) {
@@ -330,6 +334,7 @@ function disableCustomWordleDarkMode() {
     }
 }
 
+// Reads the custom wordle dm switch, adds/removes the stylesheet
 function syncCustomWordleDarkMode() {
     chrome.storage.sync.get(["customWordleDarkModeEnabled", "miscMasterEnabled"], function(data) {
         const shouldBeEnabled = data.miscMasterEnabled !== false && Boolean(data.customWordleDarkModeEnabled);
@@ -342,16 +347,19 @@ function syncCustomWordleDarkMode() {
     });
 }
 
+// Catches the popup flipping the custom wordle toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableCustomWordleDarkMode" || message.action === "syncDarkModeState") {
         syncCustomWordleDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("customWordleDarkModeEnabled" in changes || "miscMasterEnabled" in changes)) {
         syncCustomWordleDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncCustomWordleDarkMode();

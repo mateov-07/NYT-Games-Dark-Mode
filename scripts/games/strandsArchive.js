@@ -1,3 +1,6 @@
+// Provides dark mode functionality for the Strands Archive
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableStrandsArchiveDarkMode() {
     const svgURL_DateArrow = chrome.runtime.getURL("svgs/date-picker-arrow.svg");
     const strandsArchiveCSS = `
@@ -265,6 +268,7 @@ function enableStrandsArchiveDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableStrandsArchiveDarkMode() {
     const styleElement = document.getElementById("strandsarchivestyle");
     if (styleElement) {
@@ -272,6 +276,7 @@ function disableStrandsArchiveDarkMode() {
     }
 }
 
+// Reads the strands archive dm switch, adds/removes the stylesheet
 function syncStrandsArchiveDarkMode() {
     chrome.storage.sync.get(["strandsArchiveDarkModeEnabled", "archivesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.archivesMasterEnabled !== false && Boolean(data.strandsArchiveDarkModeEnabled);
@@ -284,16 +289,19 @@ function syncStrandsArchiveDarkMode() {
     });
 }
 
+// Catches the popup flipping the strands archive toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableStrandsArchiveDarkMode" || message.action === "syncDarkModeState") {
         syncStrandsArchiveDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("strandsArchiveDarkModeEnabled" in changes || "archivesMasterEnabled" in changes)) {
         syncStrandsArchiveDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncStrandsArchiveDarkMode();

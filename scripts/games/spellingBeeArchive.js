@@ -1,3 +1,6 @@
+// Provides dark mode functionality for the Spelling Bee Archive
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableSpellingBeeArchiveDarkMode() {
     const svgURL_Swirl = chrome.runtime.getURL("svgs/path-swirl.svg");
     const svgURL_Wavy = chrome.runtime.getURL("svgs/path-wavy.svg");
@@ -240,6 +243,7 @@ function enableSpellingBeeArchiveDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableSpellingBeeArchiveDarkMode() {
     const styleElement = document.getElementById("spellingbeearchivestyle");
     if (styleElement) {
@@ -247,6 +251,7 @@ function disableSpellingBeeArchiveDarkMode() {
     }
 }
 
+// Reads the spelling bee archive dm switch, adds/removes the stylesheet
 function syncSpellingBeeArchiveDarkMode() {
     chrome.storage.sync.get(["spellingBeeArchiveDarkModeEnabled", "archivesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.archivesMasterEnabled !== false && Boolean(data.spellingBeeArchiveDarkModeEnabled);
@@ -259,16 +264,19 @@ function syncSpellingBeeArchiveDarkMode() {
     });
 }
 
+// Catches the popup flipping the spelling bee archive toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableSpellingBeeArchiveDarkMode" || message.action === "syncDarkModeState") {
         syncSpellingBeeArchiveDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("spellingBeeArchiveDarkModeEnabled" in changes || "archivesMasterEnabled" in changes)) {
         syncSpellingBeeArchiveDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncSpellingBeeArchiveDarkMode();

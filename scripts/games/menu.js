@@ -1,3 +1,6 @@
+// Provides dark mode functionality for the Games Menu
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableMenuDarkMode() {
     const menuCSS = `
         /* Toolbar */
@@ -498,6 +501,7 @@ function enableMenuDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableMenuDarkMode() {
     const styleElement = document.getElementById("menustyle");
     if (styleElement) {
@@ -505,6 +509,7 @@ function disableMenuDarkMode() {
     }
 }
 
+// Reads the games menu dm switch, adds/removes the stylesheet
 function syncMenuDarkMode() {
     chrome.storage.sync.get(["menuDarkModeEnabled", "miscMasterEnabled"], function(data) {
         const shouldBeEnabled = data.miscMasterEnabled !== false && Boolean(data.menuDarkModeEnabled);
@@ -517,16 +522,19 @@ function syncMenuDarkMode() {
     });
 }
 
+// Catches the popup flipping the games menu toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableMenuDarkMode" || message.action === "syncDarkModeState") {
         syncMenuDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("menuDarkModeEnabled" in changes || "miscMasterEnabled" in changes)) {
         syncMenuDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncMenuDarkMode();

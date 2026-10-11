@@ -1,3 +1,6 @@
+// Provides dark mode functionality for Sudoku
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableSudokuDarkMode() {
     const svgURL_IconClose = chrome.runtime.getURL("svgs/icon-close-2.svg");
     const svgURL_Error404Small = chrome.runtime.getURL("svgs/error404-illustration-s.svg");
@@ -365,6 +368,7 @@ function enableSudokuDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableSudokuDarkMode() {
     const styleElement = document.getElementById("sudokustyle");
     if (styleElement) {
@@ -372,6 +376,7 @@ function disableSudokuDarkMode() {
     }
 }
 
+// Reads the sudoku dm switch, adds/removes the stylesheet, tells sudokuColors.js the result so display preset knows which palette to show
 function syncSudokuDarkMode() {
     chrome.storage.sync.get(["sudokuDarkModeEnabled", "gamesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.gamesMasterEnabled !== false && Boolean(data.sudokuDarkModeEnabled);
@@ -385,16 +390,19 @@ function syncSudokuDarkMode() {
     });
 }
 
+// Catches the popup flipping the sudoku toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableSudokuDarkMode" || message.action === "syncDarkModeState") {
         syncSudokuDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("sudokuDarkModeEnabled" in changes || "gamesMasterEnabled" in changes)) {
         syncSudokuDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncSudokuDarkMode();

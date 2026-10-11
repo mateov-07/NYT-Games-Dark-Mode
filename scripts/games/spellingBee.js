@@ -1,3 +1,6 @@
+// Provides dark mode functionality for Spelling Bee
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableSpellingBeeDarkMode() {
     const svgURL_Genius = chrome.runtime.getURL("svgs/sb-stats-genius.svg");
     const svgURL_Regiwall = chrome.runtime.getURL("svgs/spellingbee-stats-regiwall.svg");
@@ -667,6 +670,7 @@ function enableSpellingBeeDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableSpellingBeeDarkMode() {
     const styleElement = document.getElementById("spellingbeestyle");
     if (styleElement) {
@@ -674,6 +678,7 @@ function disableSpellingBeeDarkMode() {
     }
 }
 
+// Reads the spelling bee dm switch, adds/removes the stylesheet
 function syncSpellingBeeDarkMode() {
     chrome.storage.sync.get(["spellingBeeDarkModeEnabled", "gamesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.gamesMasterEnabled !== false && Boolean(data.spellingBeeDarkModeEnabled);
@@ -686,16 +691,19 @@ function syncSpellingBeeDarkMode() {
     });
 }
 
+// Catches the popup flipping the spelling bee toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableSpellingBeeDarkMode" || message.action === "syncDarkModeState") {
         syncSpellingBeeDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("spellingBeeDarkModeEnabled" in changes || "gamesMasterEnabled" in changes)) {
         syncSpellingBeeDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncSpellingBeeDarkMode();

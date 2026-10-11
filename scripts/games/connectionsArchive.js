@@ -1,3 +1,6 @@
+// Provides dark mode functionality for the Connections Archive
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableConnectionsArchiveDarkMode() {
     const svgURL_DateArrow = chrome.runtime.getURL("svgs/date-picker-arrow.svg");
     const connectionsArchiveCSS = `
@@ -265,6 +268,7 @@ function enableConnectionsArchiveDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableConnectionsArchiveDarkMode() {
     const styleElement = document.getElementById("connectionsarchivestyle");
     if (styleElement) {
@@ -272,6 +276,7 @@ function disableConnectionsArchiveDarkMode() {
     }
 }
 
+// Reads the connections archive dm switch, adds/removes the stylesheet
 function syncConnectionsArchiveDarkMode() {
     chrome.storage.sync.get(["connectionsArchiveDarkModeEnabled", "archivesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.archivesMasterEnabled !== false && Boolean(data.connectionsArchiveDarkModeEnabled);
@@ -284,16 +289,19 @@ function syncConnectionsArchiveDarkMode() {
     });
 }
 
+// Catches the popup flipping the connections archive toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableConnectionsArchiveDarkMode" || message.action === "syncDarkModeState") {
         syncConnectionsArchiveDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("connectionsArchiveDarkModeEnabled" in changes || "archivesMasterEnabled" in changes)) {
         syncConnectionsArchiveDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncConnectionsArchiveDarkMode();

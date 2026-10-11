@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
+    <!-- Stylesheets load in this order on purpose for priority layering -->
     <head>
         <title>Dark Mode for NYT Games</title>
         <link rel="stylesheet" href="styles/theme.css">
@@ -13,6 +14,7 @@
         <script type="module" src="scripts/popup/popup.js"></script>
     </head>
     <body>
+        <!-- Logo, title and the confirmation toast -->
         <header>
             <div class="logo">
                 <img src="icons/nytdark48.png">
@@ -23,6 +25,7 @@
                 <span class="header-toast-text"></span>
             </span>
         </header>
+        <!-- Top page buttons, one per page below -->
         <div class="page-buttons center">
             <div class="dark-mode-button enabled">
                 <button class="center" data-page="dark-mode-button">
@@ -43,7 +46,9 @@
                 </button>
             </div>
         </div>
+        <!-- The three pages plus every dialog -->
         <div class="extension-pages center">
+            <!-- Dark mode page -->
             <div class="dark-mode-page center">
                 <div class="wrap">
                     <div class="games-sliders">
@@ -127,6 +132,7 @@
                             </label>
                         </div>
                     </div>
+                    <!-- Archives -->
                     <div class="archives-sliders">
                         <label class="section-header">
                             <span class="section-title">Archives</span>
@@ -173,6 +179,7 @@
                             </label>
                         </div>
                     </div>
+                    <!-- Miscellaneous -->
                     <div class="misc-sliders">
                         <label class="section-header">
                             <span class="section-title">Misc.</span>
@@ -221,8 +228,10 @@
                     </div>
                 </div>
             </div>
+            <!-- Custom colors page -->
             <div class="custom-colors-page center hidden">
                 <div class="wrap">
+                    <!-- Color picker -->
                     <div class="color-picker">
                         <div class="wrap">
                             <div class="top">
@@ -237,6 +246,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Hexcode field and hex actions  -->
                             <div class="bottom">
                                 <div class="row hex-row">
                                     <div class="value" id="hexOut">
@@ -259,6 +269,7 @@
                             </div>
                         </div> 
                     </div>
+                    <!-- Color info -->
                     <div class="color-info">
                         <div class="wrap">
                             <div class="color-info-tabs">
@@ -269,6 +280,7 @@
                                 <button class="color-info-help" id="colorHelp" type="button" title="Help" aria-label="Help" aria-haspopup="dialog">?</button>
                             </div>
                             <div class="color-info-panels">
+                                <!-- Crosswords elements -->
                                 <div class="color-info-panel" id="panel-crosswords">
                                     <label class="color-option" data-key="cw_cell_borders">
                                         <span class="color-option-body">
@@ -436,6 +448,7 @@
                                         <span class="radio-ui"></span>
                                     </label>
                                 </div>
+                                <!-- Sudoku elements -->
                                 <div class="color-info-panel hidden" id="panel-sudoku">
                                     <label class="color-option" data-key="sd_board_frame">
                                         <span class="color-option-body">
@@ -614,6 +627,7 @@
                                         <span class="radio-ui"></span>
                                     </label>
                                 </div>
+                                <!-- Wordle elements -->
                                 <div class="color-info-panel hidden" id="panel-wordle">
                                     <label class="color-option" data-key="wd_empty_tile_border">
                                         <span class="color-option-body">
@@ -737,6 +751,7 @@
                                         <span class="radio-ui"></span>
                                     </label>
                                 </div>
+                                <!-- Connections elements -->
                                 <div class="color-info-panel hidden" id="panel-connections">
                                     <label class="color-option" data-key="cn_card_background">
                                         <span class="color-option-body">
@@ -894,6 +909,7 @@
                                     </label>
                                 </div>
                             </div>
+                            <!-- Preset dropdown and the edit button -->
                             <div class="color-presets">
                                 <div class="preset-group preset-group-fill">
                                     <span class="preset-group-label" id="presetSelectLabel">Preset</span>
@@ -948,6 +964,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Settings page -->
             <div class="settings-page center hidden">
                 <div class="wrap">
                     <div class="settings-list">
@@ -1030,6 +1047,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Help dialog -->
             <div class="modal-overlay" id="helpOverlay">
                 <div class="modal help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
                     <div class="help-head">
@@ -1056,6 +1074,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Zoomed graphic preview -->
             <div class="help-zoom" id="helpZoom" role="dialog" aria-modal="true" aria-labelledby="helpZoomName" tabindex="-1">
                 <div class="help-zoom-frame" id="helpZoomFrame"></div>
                 <div class="help-zoom-caption">
@@ -1064,6 +1083,7 @@
                 </div>
                 <span class="help-zoom-hint">(click anywhere to close)</span>
             </div>
+            <!-- Dialog that every popup action uses -->
             <div class="modal-overlay" id="modalOverlay">
                 <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
                     <span class="modal-title" id="modalTitle"></span>

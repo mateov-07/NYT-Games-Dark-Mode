@@ -1,7 +1,10 @@
+// Provides dark mode functionality for Strands
+
 const strandsSourceObservers = {};
 let strandsReplaceTimeout = null;
 let strandsObserver = null;
 
+// Points a how to play video at the dark copy, keeping and watching the element origin so the page cannot put the light one back
 function replaceVideo(selector, newSource) {
     const video = document.querySelector(selector);
     if (!video) return;
@@ -29,6 +32,7 @@ function replaceVideo(selector, newSource) {
     strandsSourceObservers[selector].observe(source, {attributes: true, attributeFilter: ["src"]});
 }
 
+// Puts a how to play video back to the source NYT has and stops watching it
 function restoreVideo(selector) {
     if (strandsSourceObservers[selector]) {
         strandsSourceObservers[selector].disconnect();
@@ -44,6 +48,8 @@ function restoreVideo(selector) {
     video.style.visibility = '';
 }
 
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
+// then swaps the how to play videos and watches the page so they stay swapped
 function enableStrandsDarkMode() {
     const svgURL_Regiwall = chrome.runtime.getURL("svgs/strands-stats-regiwall.svg");
     const strandsCSS = `
@@ -542,6 +548,7 @@ function enableStrandsDarkMode() {
     strandsObserver.observe(document.documentElement, {childList: true, subtree: true});
 }
 
+// Only swaps the how to play videos while the stylesheet is actually on the page
 function applyDarkModeVideosIfEnabled() {
     if (!document.getElementById("strandsstyle")) return;
     replaceVideo(".darkPage1Gif", "mp4s/FirstGIFH2P.mp4");
@@ -549,6 +556,8 @@ function applyDarkModeVideosIfEnabled() {
 }
 
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
+// along with putting the how to play videos back and stopping the page from being watched
 function disableStrandsDarkMode() {
     const styleElement = document.getElementById("strandsstyle");
     if (styleElement) {
@@ -565,6 +574,7 @@ function disableStrandsDarkMode() {
     }
 }
 
+// Reads the strands dm switch, adds/removes the stylesheet
 function syncStrandsDarkMode() {
     chrome.storage.sync.get(["strandsDarkModeEnabled", "gamesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.gamesMasterEnabled !== false && Boolean(data.strandsDarkModeEnabled);
@@ -577,16 +587,19 @@ function syncStrandsDarkMode() {
     });
 }
 
+// Catches the popup flipping the strands toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableStrandsDarkMode" || message.action === "syncDarkModeState") {
         syncStrandsDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("strandsDarkModeEnabled" in changes || "gamesMasterEnabled" in changes)) {
         syncStrandsDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncStrandsDarkMode();

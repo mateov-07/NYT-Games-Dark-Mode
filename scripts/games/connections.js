@@ -1,3 +1,6 @@
+// Provides dark mode functionality for Connections
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableConnectionsDarkMode() {
     const svgURL_Regiwall = chrome.runtime.getURL("svgs/connections-stats-regiwall.svg");
     const connectionsCSS = `
@@ -477,6 +480,7 @@ function enableConnectionsDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableConnectionsDarkMode() {
     const styleElement = document.getElementById("connectionsstyle");
     if (styleElement) {
@@ -484,6 +488,7 @@ function disableConnectionsDarkMode() {
     }
 }
 
+// Reads the connections dm switch, adds/removes the stylesheet, tells connectionsColors.js the result so display preset knows which palette to show
 function syncConnectionsDarkMode() {
     chrome.storage.sync.get(["connectionsDarkModeEnabled", "gamesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.gamesMasterEnabled !== false && Boolean(data.connectionsDarkModeEnabled);
@@ -497,16 +502,19 @@ function syncConnectionsDarkMode() {
     });
 }
 
+// Catches the popup flipping the connections toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableConnectionsDarkMode" || message.action === "syncDarkModeState") {
         syncConnectionsDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("connectionsDarkModeEnabled" in changes || "gamesMasterEnabled" in changes)) {
         syncConnectionsDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncConnectionsDarkMode();

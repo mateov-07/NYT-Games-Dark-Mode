@@ -1,7 +1,10 @@
+// Provides dark mode functionality for Pips
+
 let pipsSourceObserver = null;
 let pipsObserver = null;
 let pipsReplaceTimeout = null;
 
+// Points a how to play video at the dark copy, keeping and watching the element origin so the page cannot put the light one back
 function replaceVideo(selector, newSource) {
     const video = document.querySelector(selector);
     if (!video) return;
@@ -29,6 +32,7 @@ function replaceVideo(selector, newSource) {
     pipsSourceObserver.observe(source, {attributes: true, attributeFilter: ["src"]});
 }
 
+// Puts a how to play video back to the source NYT has and stops watching it
 function restoreVideo(selector) {
     if (pipsSourceObserver) {
         pipsSourceObserver.disconnect();
@@ -44,6 +48,8 @@ function restoreVideo(selector) {
     video.style.visibility = '';
 }
 
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
+// then swaps the how to play video and watches the page so it stays swapped
 function enablePipsDarkMode() {
     const pipsCSS = `
         /* Toolbar */
@@ -440,11 +446,14 @@ function enablePipsDarkMode() {
     pipsObserver.observe(document.documentElement, {childList: true, subtree: true});
 }
 
+// Only swaps the how to play video while the stylesheet is actually on the page
 function applyDarkModeVideoIfEnabled() {
     if (!document.getElementById("pipsstyle")) return;
     replaceVideo(".Help-module_howToPlayGif__S5Kic", "mp4s/h2p-gif-slowed.mp4");
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
+// along with putting the how to play video back and stopping the page from being watched
 function disablePipsDarkMode() {
     const styleElement = document.getElementById("pipsstyle");
     if (styleElement) {
@@ -460,6 +469,7 @@ function disablePipsDarkMode() {
     }
 }
 
+// Reads the pips dm switch, adds/removes the stylesheet
 function syncPipsDarkMode() {
     chrome.storage.sync.get(["pipsDarkModeEnabled", "gamesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.gamesMasterEnabled !== false && Boolean(data.pipsDarkModeEnabled);
@@ -472,16 +482,19 @@ function syncPipsDarkMode() {
     });
 }
 
+// Catches the popup flipping the pips toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enablePipsDarkMode" || message.action === "syncDarkModeState") {
         syncPipsDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("pipsDarkModeEnabled" in changes || "gamesMasterEnabled" in changes)) {
         syncPipsDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncPipsDarkMode();

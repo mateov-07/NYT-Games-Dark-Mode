@@ -1,3 +1,6 @@
+// Provides dark mode functionality for Tiles
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableTilesDarkMode() {
     const tilesCSS = `
         /* Toolbar */
@@ -309,6 +312,7 @@ function enableTilesDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableTilesDarkMode() {
     const styleElement = document.getElementById("tilesstyle");
     if (styleElement) {
@@ -316,6 +320,7 @@ function disableTilesDarkMode() {
     }
 }
 
+// Reads the tiles dm switch, adds/removes the stylesheet
 function syncTilesDarkMode() {
     chrome.storage.sync.get(["tilesDarkModeEnabled", "gamesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.gamesMasterEnabled !== false && Boolean(data.tilesDarkModeEnabled);
@@ -328,16 +333,19 @@ function syncTilesDarkMode() {
     });
 }
 
+// Catches the popup flipping the tiles toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableTilesDarkMode" || message.action === "syncDarkModeState") {
         syncTilesDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("tilesDarkModeEnabled" in changes || "gamesMasterEnabled" in changes)) {
         syncTilesDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncTilesDarkMode();

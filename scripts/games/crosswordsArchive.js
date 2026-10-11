@@ -1,3 +1,6 @@
+// Provides dark mode functionality for the Crosswords Archive
+
+// Builds the whole dark mode stylesheet and drops it onto the page as one style element
 function enableCrosswordsArchiveDarkMode() {
     const svgURL_Arrow = chrome.runtime.getURL("svgs/arrow.svg");
     const crosswordsArchiveCSS = `
@@ -381,6 +384,7 @@ function enableCrosswordsArchiveDarkMode() {
     (document.head || document.documentElement).appendChild(style);
 }
 
+// Takes dark mode back off by removing the style element, leaving NYT as it is normally
 function disableCrosswordsArchiveDarkMode() {
     const styleElement = document.getElementById("crosswordsarchivestyle");
     if (styleElement) {
@@ -388,6 +392,7 @@ function disableCrosswordsArchiveDarkMode() {
     }
 }
 
+// Reads the crosswords archive dm switch, adds/removes the stylesheet
 function syncCrosswordsArchiveDarkMode() {
     chrome.storage.sync.get(["crosswordsArchiveDarkModeEnabled", "archivesMasterEnabled"], function(data) {
         const shouldBeEnabled = data.archivesMasterEnabled !== false && Boolean(data.crosswordsArchiveDarkModeEnabled);
@@ -400,16 +405,19 @@ function syncCrosswordsArchiveDarkMode() {
     });
 }
 
+// Catches the popup flipping the crosswords archive toggle and sync so an already open tab updates without needing a reload
 chrome.runtime.onMessage.addListener(function(message) {
     if (message.action === "enableCrosswordsArchiveDarkMode" || message.action === "syncDarkModeState") {
         syncCrosswordsArchiveDarkMode();
     }
 });
 
+// Catches the same two keys changing anywhere else which covers another window and another synced device
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if (areaName === "sync" && ("crosswordsArchiveDarkModeEnabled" in changes || "archivesMasterEnabled" in changes)) {
         syncCrosswordsArchiveDarkMode();
     }
 });
 
+// Runs once on load so a tab opened after the toggle was set still comes up dark
 syncCrosswordsArchiveDarkMode();
