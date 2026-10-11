@@ -4,7 +4,8 @@
 import {popupState} from "./states.js";
 import {
     colorPanelConfig, colorPanelNames,
-    displayPresetName, customPresetNames, prebuiltPresetNames, presetLabels, presetNameMaxLength
+    displayPresetName, customPresetNames, presetLabels, presetNameMaxLength,
+    isPrebuiltPreset, isPresetLocked
 } from "./defaultExports.js";
 import {hexToHsv, normalizeHexColor} from "./colorMath.js";
 import {updateAll, isDisplayPresetDark, getCurrentPickerHex} from "./updater.js";
@@ -81,13 +82,8 @@ function loadCustomPresets({selector, defaults, savedPresets}) {
 // Returns the saved preset if the popup still offers it, otherwise the display preset
 function resolvePresetName(savedPreset) {
     if (customPresetNames.includes(savedPreset)) return savedPreset;
-    if (prebuiltPresetNames.includes(savedPreset)) return savedPreset;
+    if (isPrebuiltPreset(savedPreset)) return savedPreset;
     return displayPresetName;
-}
-
-// Returns true if the preset is a prebuilt (Midnight, Forest and Magma)
-export function isPrebuiltPreset(presetName) {
-    return prebuiltPresetNames.includes(presetName);
 }
 
 // Builds color states from a plain hex palette
@@ -130,8 +126,7 @@ export function refreshDisplayPresetColors() {
 
 // Returns true when a game's active preset cannot be edited (Display or Prebuilt)
 export function isPanelEditingLocked(panelName) {
-    const presetName = popupState.activePresets[panelName];
-    return presetName === displayPresetName || isPrebuiltPreset(presetName);
+    return isPresetLocked(popupState.activePresets[panelName]);
 }
 
 // Returns true when no color is selected or the selected color belongs to a preset that cannot be edited

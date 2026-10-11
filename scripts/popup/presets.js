@@ -5,16 +5,17 @@ import {popupState} from "./states.js";
 import {
     colorPanelConfig, colorPanelNames,
     displayPresetName, customPresetNames, presetLabels, presetNameMaxLength, customPresetSwatch,
-    applyGameColorsAction
+    applyGameColorsAction, isPrebuiltPreset
 } from "./defaultExports.js";
 import {hexToHsv, normalizeHexColor} from "./colorMath.js";
 import {saveTheme, sendMessageToActiveTab} from "./storage.js";
+import {encodeBase64, decodeBase64, cleanCode} from "./base64.js";
 import {getModalElements, openModal} from "./modal.js";
 import {
     updateAll, updatePresetMenuOpenState, showHeaderToast, getPresetDisplayName, getCustomPresetColor
 } from "./updater.js";
 import {
-    buildActivePanelColors, resolveColorKey, syncPickerToSelectedColor, isPrebuiltPreset, isPanelEditingLocked
+    buildActivePanelColors, resolveColorKey, syncPickerToSelectedColor, isPanelEditingLocked
 } from "./colorState.js";
 
 // Bumped if the preset code format ever changes so old codes can be rejected with a clear reason
@@ -164,14 +165,14 @@ function buildPresetCode() {
     for (const [colorKey, colorState] of Object.entries(popupState.colors[kind] || {})) {
         colors[colorKey] = colorState.hex;
     }
-    return btoa(JSON.stringify({v: presetCodeVersion, kind, colors}));
+    return encodeBase64(JSON.stringify({v: presetCodeVersion, kind, colors}));
 }
 
 // Unpacks a preset code, returning its colors or an error when it is unreadable/bad version or meant for a different game
 function readPresetCode(code) {
     let payload;
     try {
-        payload = JSON.parse(atob(String(code).trim()));
+        payload = JSON.parse(decodeBase64(cleanCode(code)));
     } catch {
         return {error: "Code could not be read. Check that it was copied correctly."};
     }

@@ -156,11 +156,17 @@ function commitTypedHex(hexInput) {
         hexInput.value = pickerHex.slice(1);
         return;
     }
-    const typedHex = /^[0-9A-F]{1,6}$/.test(typedValue) ? `#${typedValue.padEnd(6, "0")}` : "#000000";
+    const typedHex = buildTypedHex(typedValue);
     hexInput.value = typedHex.slice(1);
     if (typedHex === pickerHex) return;
     if (!setPickerFromHex(typedHex)) return;
     commitPickerColor();
+}
+
+// Turns what was typed into a hex so that typing/pasting a code always land on the same color, and pads anything shorter
+function buildTypedHex(typedValue) {
+    if (!/^[0-9A-F]{1,6}$/.test(typedValue)) return "#000000";
+    return normalizeHexColor(typedValue) || `#${typedValue.padEnd(6, "0")}`;
 }
 
 // Resets the selected color back to its default when the reset button is clicked

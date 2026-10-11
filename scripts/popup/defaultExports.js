@@ -527,6 +527,16 @@ export const prebuiltPresetSwatches = {
 // Longest character length a custom preset can have
 export const presetNameMaxLength = 14;
 
+// Returns true for a prebuilt preset (Midnight, Forest and Magma)
+export function isPrebuiltPreset(presetName) {
+    return prebuiltPresetNames.includes(presetName);
+}
+
+// Returns true for the presets that cannot be edited (display and prebuilt presets)
+export function isPresetLocked(presetName) {
+    return presetName === displayPresetName || isPrebuiltPreset(presetName);
+}
+
 // Every game on the custom colors page with its corresponding fields and the dark mode toggles
 export const colorPanelConfig = {
     crosswords: {

@@ -4,9 +4,10 @@
 import {popupState} from "./states.js";
 import {
     pageButtons, pages, dmToggleGroups, svCursorInset,
-    displayPresetName, prebuiltPresetNames, presetLabels,
+    displayPresetName, presetLabels,
     prebuiltPresetSwatches, displayLightSwatch, displayDarkSwatch, customPresetSwatch,
-    customPresetNames, colorPanelConfig, colorPanelNames, headerToastDuration
+    customPresetNames, colorPanelConfig, colorPanelNames, headerToastDuration,
+    isPrebuiltPreset, isPresetLocked
 } from "./defaultExports.js";
 import {hsvToHex} from "./colorMath.js";
 
@@ -137,7 +138,7 @@ export function updatePresetUI() {
     }
     
     const pickerLocked = isPresetLocked(activePreset);
-    const activeIsPrebuilt = prebuiltPresetNames.includes(activePreset);
+    const activeIsPrebuilt = isPrebuiltPreset(activePreset);
     const colorPicker = document.querySelector(".color-picker");
     if (colorPicker) {
         colorPicker.classList.toggle("locked", pickerLocked);
@@ -159,11 +160,6 @@ export function updatePresetUI() {
             actionButton.disabled = pickerLocked;
         }
     }
-}
-
-// Returns true for the display and prebuilt presets
-function isPresetLocked(presetName) {
-    return presetName === displayPresetName || prebuiltPresetNames.includes(presetName);
 }
 
 // Returns true when the display preset should preview dark colors (dark toggles are on)
@@ -192,7 +188,7 @@ function getPresetSwatchHex(presetName) {
         const ownsNoToggle = !(colorPanelConfig[panelName].displayToggleIds || []).length;
         return ownsNoToggle || isDisplayPresetDark(panelName) ? displayDarkSwatch : displayLightSwatch;
     }
-    if (prebuiltPresetNames.includes(presetName)) {
+    if (isPrebuiltPreset(presetName)) {
         return prebuiltPresetSwatches[presetName] || customPresetSwatch;
     }
     return getCustomPresetColor(panelName, presetName) || customPresetSwatch;

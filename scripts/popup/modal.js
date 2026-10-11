@@ -39,6 +39,7 @@ export function openModal(config) {
         modal.code.value = config.code.value || "";
     }
     modal.confirm.textContent = config.confirmLabel;
+    modal.confirm.disabled = false;
     modal.cancel.classList.toggle("hidden", !config.cancelLabel);
     if (config.cancelLabel) {
         modal.cancel.textContent = config.cancelLabel;
@@ -105,13 +106,18 @@ export function attachModalHandlers() {
             closeModal();
             return;
         }
-        const result = (await handler(modal)) || {};
-        if (activeConfirmHandler !== handler) return;
-        if (result.error) {
-            modal.error.textContent = result.error;
-            return;
+        modal.confirm.disabled = true;
+        try {
+            const result = (await handler(modal)) || {};
+            if (activeConfirmHandler !== handler) return;
+            if (result.error) {
+                modal.error.textContent = result.error;
+                return;
+            }
+            closeModal();
+        } finally {
+            modal.confirm.disabled = false;
         }
-        closeModal();
     });
     modal.cancel?.addEventListener("click", closeModal);
     modal.overlay?.addEventListener("click", (event) => {

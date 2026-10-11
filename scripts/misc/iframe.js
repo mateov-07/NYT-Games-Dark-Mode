@@ -1,4 +1,6 @@
-// Get enabled groups for each master switch
+// Injected into the iframe to apply dark mode styles based on the extension's storage settings
+
+// Groups of dark mode keys
 const darkModeGroups = {
     gamesMasterEnabled: [
         "crosswordDarkModeEnabled",

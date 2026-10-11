@@ -2,7 +2,7 @@
 
 A Chrome extension that brings a true dark mode to the **New York Times Games** site, plus full control over the colors of the Crossword, Sudoku, Wordle and Connections boards.
 
-NYT only ships dark mode for Wordle. This extension covers the rest of themm, including all puzzles, archives and the menus in between, as well as letting you repaint the boards of some games however you like.
+NYT only ships dark mode for Wordle. This extension covers the rest of them, including all puzzles, archives and the menus in between, as well as letting you repaint the boards of some games however you like.
 
 ## Features
 

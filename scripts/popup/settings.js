@@ -8,6 +8,7 @@ import {
     pageButtons, colorPanelNames, syncDarkModeAction
 } from "./defaultExports.js";
 import {readSyncValues, writeSyncValue, writeSyncValues, removeSyncValues, sendMessageToActiveTab} from "./storage.js";
+import {encodeBase64, decodeBase64, cleanCode} from "./base64.js";
 import {openModal} from "./modal.js";
 import {reloadPopupState} from "./startup.js";
 import {updateAll, showHeaderToast} from "./updater.js";
@@ -105,7 +106,7 @@ function buildSettingsCode(savedValues) {
 function readSettingsCode(code) {
     let payload;
     try {
-        payload = JSON.parse(decodeBase64(String(code).replace(/\s+/g, "")));
+        payload = JSON.parse(decodeBase64(cleanCode(code)));
     } catch {
         return {error: "Code could not be read. Check that it was copied correctly."};
     }
@@ -124,20 +125,6 @@ function readSettingsCode(code) {
         return {error: "Code did not hold any settings this version of the extension knows about."};
     }
     return {values};
-}
-
-// Converts text to and from base64 through UTF-8 so preset names with special characters survive a backup
-function encodeBase64(text) {
-    const bytes = new TextEncoder().encode(text);
-    let binary = "";
-    for (const byte of bytes) {
-        binary += String.fromCharCode(byte);
-    }
-    return btoa(binary);
-}
-function decodeBase64(code) {
-    const bytes = Uint8Array.from(atob(code), (character) => character.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
 }
 
 // Removes saved keys the backup does not hold writes the backup's values and redraws the popup
