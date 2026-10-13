@@ -229,7 +229,7 @@ function enableSudokuDarkMode() {
             fill: white;
         }
 
-        .su-timer__value {
+        .su-timer__value, .su-level, .su-error-count, .su-keyboard__auto {
             color: white;
         }
 

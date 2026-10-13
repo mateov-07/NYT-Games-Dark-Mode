@@ -369,7 +369,7 @@ function enableMidiDarkMode() {
             background-color: #0f0f0f !important;
         }
 
-        .midi__congrats-modal--content {
+        .xwd__congrats-modal--content, .mini__congrats-modal--content {
             color: white
         }
 

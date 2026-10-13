@@ -28,7 +28,7 @@ NYT only ships dark mode for Wordle. This extension covers the rest of them, inc
 
 ## Installation
 
-Download the extension on the Chrome Web Store here!
+Download the extension on the Chrome Web Store [here](https://chromewebstore.google.com/detail/dark-mode-for-nyt-games/iblanhgliilkajljllnagnbemlcmdpod)!
 
 If you would like to have it on your own machine, here's how you can do that:
 
@@ -46,6 +46,10 @@ If you would like to have it on your own machine, here's how you can do that:
  Within the popup, navigate to **Settings → Report a Bug** in the popup: it fills in your version, browser, OS and current page for you, and allows you to type in what happened through  the email speakingblock@gmail.com.
 
 Otherwise, you may open an issue on this repository.
+
+## License
+
+Released under the [MIT License](LICENSE).
 
 ## Credits
 

@@ -5,6 +5,7 @@ import {popupState} from "./states.js";
 import {
     popupStorageKeys, defaultPageStorageKey, defaultColorPanelStorageKey,
     lastUsedOptionValue, githubUrl, changelogUrl, changelogNotes, supportEmail, gameUrlPrefix,
+    webStoreUrl,
     pageButtons, colorPanelNames, syncDarkModeAction
 } from "./defaultExports.js";
 import {readSyncValues, writeSyncValue, writeSyncValues, removeSyncValues, sendMessageToActiveTab} from "./storage.js";
@@ -172,10 +173,13 @@ function attachChoiceGroup(selector, datasetKey, allowedValues, saveChoice) {
     });
 }
 
-// Connects the changelog and bug report rows to their dialogs
+// Connects the changelog and bug report rows to their dialogs and the store row to the listing
 function attachSupportHandlers() {
     document.getElementById("viewChangelog")?.addEventListener("click", openChangelogModal);
     document.getElementById("reportBug")?.addEventListener("click", openBugReportModal);
+    document.getElementById("openWebStore")?.addEventListener("click", () => {
+        chrome.tabs.create({url: webStoreUrl});
+    });
 }
 
 // Lists what changed in the running version with a link to the releases page on GitHub

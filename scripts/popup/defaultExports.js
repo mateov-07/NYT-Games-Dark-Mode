@@ -14,10 +14,14 @@ export const lastUsedOptionValue = "last-used";
 export const githubUrl = "https://github.com/mateov-07/NYT-Games-Dark-Mode";
 export const changelogUrl = "https://github.com/mateov-07/NYT-Games-Dark-Mode/releases";
 
+// Chrome Web Store listing opened by the store row on the settings page
+export const webStoreUrl = "https://chromewebstore.google.com/detail/dark-mode-for-nyt-games/iblanhgliilkajljllnagnbemlcmdpod";
+
 // Notes shown in the changelog dialog, updated with every release
 export const changelogNotes = [
-    "Updated README.md",
-    "Changed extension name and description"
+    "Fixed some crossword and sudoku dark mode issues",
+    "Added setting to view the extension in the store page",
+    "Uploaded to Chrome Web Store! :D"
 ];
 
 // Email address that bug reports, feedback and questions are sent to

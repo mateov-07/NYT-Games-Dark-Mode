@@ -471,6 +471,36 @@ function enableMiniDarkMode() {
         .BonusHubCTA-module_card__WI1lq {
             color: black;
         }
+
+        .xwd__modal--button-container.xwd__congrats-modal--buttons-wrapper--bonus button {
+            background: white;
+            color: black;
+        }
+
+        .xwd__modal--button-container.xwd__congrats-modal--buttons-wrapper--bonus button:hover {
+            background: #e4e4e4;
+            color: black;
+        }
+
+        .Toast-module_toast__q1i0d {
+            background-color: white;
+            color: black;
+        }
+
+        .xwd__editorial-content--subGameplayGrid .xwd__editorial-content--header {
+            border-top: solid 6px white;
+        }
+
+        .xwd__editorial-content--subGameplayGrid .xwd__editorial-content--header a,
+        .xwd__editorial-content--editorialCard .xwd__editorial-content--kicker,
+        .xwd__editorial-content--editorialCard .xwd__editorial-content--meta {
+            color: white;
+        }
+
+        .xwd__editorial-content--subGameplayGrid .xwd__editorial-content--header a::after {
+            border-right: 2px solid white;
+            border-top: 2px solid white;
+        }
     `;
     const style = document.createElement("style");
     style.id = "ministyle";
