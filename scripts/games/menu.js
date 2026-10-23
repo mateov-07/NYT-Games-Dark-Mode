@@ -385,7 +385,8 @@ function enableMenuDarkMode() {
             background: #0f0f0f;
         }
 
-        .hub-guide-promo-card-content h2 {
+        .hub-guide-promo-card-content h2,
+        .hub-guide-promo-card-content .hub-guide-promo-card-title {
             color: white;
         }
 

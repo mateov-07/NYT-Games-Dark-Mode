@@ -4,7 +4,7 @@
 import {popupState} from "./states.js";
 import {
     popupStorageKeys, defaultPageStorageKey, defaultColorPanelStorageKey,
-    lastUsedOptionValue, githubUrl, changelogUrl, changelogNotes, supportEmail, gameUrlPrefix,
+    lastUsedOptionValue, githubUrl, changelogUrl, changelogDate, changelogNotes, supportEmail, gameUrlPrefix,
     webStoreUrl,
     pageButtons, colorPanelNames, syncDarkModeAction
 } from "./defaultExports.js";
@@ -185,7 +185,8 @@ function attachSupportHandlers() {
 // Lists what changed in the running version with a link to the releases page on GitHub
 function openChangelogModal() {
     openModal({
-        title: `What's New in v${chrome.runtime.getManifest().version}`,
+        title: `Changelog v${chrome.runtime.getManifest().version} - Latest`,
+        date: changelogDate,
         notes: changelogNotes,
         link: {label: "Click here to see the full changelog", url: changelogUrl},
         confirmLabel: "Done",

@@ -1090,7 +1090,10 @@
             <!-- Dialog that every popup action uses -->
             <div class="modal-overlay" id="modalOverlay">
                 <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-                    <span class="modal-title" id="modalTitle"></span>
+                    <div class="modal-header">
+                        <span class="modal-title" id="modalTitle"></span>
+                        <span class="modal-date" id="modalDate"></span>
+                    </div>
                     <p class="modal-message" id="modalMessage"></p>
                     <ul class="modal-notes" id="modalNotes"></ul>
                     <textarea class="modal-code" id="modalCode" spellcheck="false" autocomplete="off"></textarea>

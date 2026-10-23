@@ -8,6 +8,7 @@ export function getModalElements() {
     return {
         overlay: document.getElementById("modalOverlay"),
         title: document.getElementById("modalTitle"),
+        date: document.getElementById("modalDate"),
         message: document.getElementById("modalMessage"),
         notes: document.getElementById("modalNotes"),
         link: document.getElementById("modalLink"),
@@ -29,6 +30,7 @@ export function openModal(config) {
     activeConfirmHandler = config.onConfirm || null;
     modal.error.textContent = "";
     modal.title.textContent = config.title;
+    if (modal.date) modal.date.textContent = config.date || "";
     modal.message.textContent = config.message || "";
     fillModalNotes(modal, config.notes);
     fillModalLink(modal, config.link);

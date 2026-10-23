@@ -257,6 +257,27 @@ function enableSpellingBeeDarkMode() {
             color: white;
         }
 
+        /* Bottom Start Message */
+
+        .Banner-module_singleIconBanner__LFn3K, 
+        .Banner-module_singleIconBanner__LFn3K.Banner-module_subNoAdsBanner__WirKp .Banner-module_arrow__TDcAh {
+            background-color: #0f0f0f;
+        }
+
+        .Banner-module_singleIconBanner__LFn3K.Banner-module_subNoAdsBanner__WirKp .Banner-module_title__far_o,
+        .Banner-module_singleIconBanner__LFn3K.Banner-module_subNoAdsBanner__WirKp p {
+            color: white;
+        }
+
+        .pz-icon-back {
+            filter: invert(1);
+        }
+
+        g path {
+            fill: #0f0f0f;
+            stroke: white;
+        }
+
         /* Badge Earned Alert */
 
         .BadgeCarouselItem-module_badge__YWm7f {
@@ -523,7 +544,7 @@ function enableSpellingBeeDarkMode() {
             background: #0f0f0f !important;
         }
 
-        body .css-1955y77 {
+        body .css-1955y77, .MomentCongratsCutoff-module_cutoffWithBonusCta__u33Qx {
             background-color: #0f0f0f;
         }
 
@@ -576,6 +597,18 @@ function enableSpellingBeeDarkMode() {
         ._moment_1d9lu_8:not(._hide_1d9lu_50):has(.pz-moment__button--padlock) .pz-moment {
             background-color: #f7da21 !important;
             color: black;
+        }
+
+        .pz-moment.Congrats-module_moment__auGMZ.pz-moment__congrats {
+            background-color: #0f0f0f !important;
+        }
+
+        .pz-moment__congrats .pz-moment__content {
+            color: white;
+        }
+
+        .StatsOnCongratsMoments-module_inline_right_caret__k58_h {
+            filter: invert(1);
         }
 
         .Stat-module_stats__row__xnktL.Stat-module_topBorder___ilW5 {

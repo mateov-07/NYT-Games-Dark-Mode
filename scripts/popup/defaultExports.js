@@ -17,11 +17,14 @@ export const changelogUrl = "https://github.com/mateov-07/NYT-Games-Dark-Mode/re
 // Chrome Web Store listing opened by the store row on the settings page
 export const webStoreUrl = "https://chromewebstore.google.com/detail/dark-mode-for-nyt-games/iblanhgliilkajljllnagnbemlcmdpod";
 
+// Version publish date shown in the top right of the changelog dialog
+export const changelogDate = "October 22nd 2026";
+
 // Notes shown in the changelog dialog, updated with every release
 export const changelogNotes = [
-    "Fixed some crossword and sudoku dark mode issues",
-    "Added setting to view the extension in the store page",
-    "Uploaded to Chrome Web Store! :D"
+    "Updated change log popup to include date",
+    "Fixed one card text on main menu",
+    "Fixed Spelling Bee's congrats screen"
 ];
 
 // Email address that bug reports, feedback and questions are sent to
