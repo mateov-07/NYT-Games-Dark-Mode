@@ -3,7 +3,7 @@
 // Imports
 import {dmToggleConfig, dmToggleGroups, dmGroupMasterStorageKeys, syncDarkModeAction} from "./defaultExports.js";
 import {writeSyncValue, sendMessageToActiveTab} from "./storage.js";
-import {updateAll} from "./updater.js";
+import {updateAll, showHeaderToast} from "./updater.js";
 import {refreshDisplayPresetColors} from "./colorState.js";
 
 // Sets every toggle from storage, master switches get turned on and the game switches are off by default
@@ -27,7 +27,8 @@ export function attachDMToggleHandlers() {
         if (!toggleInput) continue;
         toggleInput.addEventListener("change", async () => {
             const isEnabled = toggleInput.checked;
-            await writeSyncValue(toggleConfig.storageKey, isEnabled);
+            const result = await writeSyncValue(toggleConfig.storageKey, isEnabled);
+            if (result.error) showHeaderToast(result.error, "error");
             sendMessageToActiveTab({ action: toggleConfig.action });
             refreshDisplayPresetColors();
             updateAll();
@@ -37,7 +38,8 @@ export function attachDMToggleHandlers() {
         const groupToggle = document.getElementById(groupToggleId);
         if (!groupToggle) continue;
         groupToggle.addEventListener("change", async () => {
-            await writeSyncValue(dmGroupMasterStorageKeys[groupToggleId], groupToggle.checked);
+            const result = await writeSyncValue(dmGroupMasterStorageKeys[groupToggleId], groupToggle.checked);
+            if (result.error) showHeaderToast(result.error, "error");
             sendMessageToActiveTab({ action: syncDarkModeAction });
             refreshDisplayPresetColors();
             updateAll();

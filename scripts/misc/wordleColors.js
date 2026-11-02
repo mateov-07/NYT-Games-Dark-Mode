@@ -1,5 +1,6 @@
 // Shared wordle color layer, loaded on its own (no wordle.js)
-const gameColorsStorageKey = "gameColorSettings";
+const gameColorsStorageKey = "gameColorSettingsWordle";
+const legacyGameColorsStorageKey = "gameColorSettings";
 const wdPanelName = "wordle";
 const wdActivePresetKey = "wordlePreset";
 const applyGameColorsAction = "applyGameColors";
@@ -140,8 +141,8 @@ const prebuiltWordlePresetNames = Object.keys(prebuiltWordleColors);
 
 // Loads the correct preset; the display one drops the layer so NYT's own light/dark board shows through
 function loadStoredWordleColors() {
-    chrome.storage.sync.get(gameColorsStorageKey, (data) => {
-        const settings = data?.[gameColorsStorageKey] || {};
+    chrome.storage.sync.get([gameColorsStorageKey, legacyGameColorsStorageKey], (data) => {
+        const settings = data?.[gameColorsStorageKey] || data?.[legacyGameColorsStorageKey] || {};
         const preset = settings[wdActivePresetKey];
         if (prebuiltWordlePresetNames.includes(preset)) {
             applyWordleColors(prebuiltWordleColors[preset]);
@@ -171,7 +172,7 @@ chrome.runtime.onMessage.addListener(function(message) {
 
 // Listens for changes to the storage and reloads the colors if wordle settings have changed
 chrome.storage.onChanged.addListener(function(changes, areaName) {
-    if (areaName === "sync" && gameColorsStorageKey in changes) {
+    if (areaName === "sync" && (gameColorsStorageKey in changes || legacyGameColorsStorageKey in changes)) {
         loadStoredWordleColors();
     }
 });

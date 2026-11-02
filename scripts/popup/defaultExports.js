@@ -1,9 +1,19 @@
 // Stored information that all popup script files can easily access without copy pasting preexisting code
 
-// Storage keys for the last page and game color panel the popup was on and every game's saved colors
+// Storage keys for the last page and game color panel the popup was on
 export const popupActivePageStorageKey = "popupActivePage";
 export const popupActiveColorPanelStorageKey = "popupActiveColorPanel";
-export const gameColorsStorageKey = "gameColorSettings";
+
+// One storage key per game for its saved colors for avoid filling 8KB chrome.storage.sync storage cap
+export const gameColorsStorageKeys = {
+    crosswords:  "gameColorSettingsCrosswords",
+    sudoku:      "gameColorSettingsSudoku",
+    wordle:      "gameColorSettingsWordle",
+    connections: "gameColorSettingsConnections"
+};
+
+// The key every game's colors used to share, read now only so an older save can be split up and dropped
+export const legacyGameColorsStorageKey = "gameColorSettings";
 
 // Storage keys and behavior choice for the settings page's default page and color panel preferences
 export const defaultPageStorageKey = "defaultPageOnOpen";
@@ -18,13 +28,13 @@ export const changelogUrl = "https://github.com/mateov-07/NYT-Games-Dark-Mode/re
 export const webStoreUrl = "https://chromewebstore.google.com/detail/dark-mode-for-nyt-games/iblanhgliilkajljllnagnbemlcmdpod";
 
 // Version publish date shown in the top right of the changelog dialog
-export const changelogDate = "October 22nd 2026";
+export const changelogDate = "November 2nd 2026";
 
 // Notes shown in the changelog dialog, updated with every release
 export const changelogNotes = [
-    "Updated change log popup to include date",
-    "Fixed one card text on main menu",
-    "Fixed Spelling Bee's congrats screen"
+    "Updated chrome saving to avoid hitting storage limits for custom colors.",
+    "Fixed crossword, connections, strands coloring for congrats and paywall screens.",
+    "Fixed icon/bg coloring for bonus puzzles within the main menu."
 ];
 
 // Email address that bug reports, feedback and questions are sent to
@@ -492,7 +502,7 @@ export const popupStorageKeys = [
     popupActiveColorPanelStorageKey,
     defaultPageStorageKey,
     defaultColorPanelStorageKey,
-    gameColorsStorageKey,
+    ...Object.values(gameColorsStorageKeys),
     ...Object.values(dmGroupMasterStorageKeys),
     ...Object.values(dmToggleConfig).map((toggleConfig) => toggleConfig.storageKey)
 ];

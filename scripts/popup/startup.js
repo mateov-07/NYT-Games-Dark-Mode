@@ -4,9 +4,9 @@
 import {popupState} from "./states.js";
 import {
     defaultPageStorageKey, defaultColorPanelStorageKey, lastUsedOptionValue,
-    colorPanelNames, gameColorsStorageKey, legacyGroupStorageKeys, popupStorageKeys, pageButtons
+    colorPanelNames, legacyGameColorsStorageKey, legacyGroupStorageKeys, popupStorageKeys, pageButtons
 } from "./defaultExports.js";
-import {readSyncValues, removeSyncValues} from "./storage.js";
+import {readSyncValues, removeSyncValues, mergePanelThemes, migrateLegacyGameColors} from "./storage.js";
 import {updateAll} from "./updater.js";
 import {loadThemeState} from "./colorState.js";
 import {loadDMToggleStates, attachDMToggleHandlers} from "./darkMode.js";
@@ -36,15 +36,16 @@ export async function initializePopup() {
 
 // Reads every saved value from storage, clears the old popup's keys and loads everything into popupState
 async function loadPopupState() {
-    const [savedValues] = await Promise.all([
-        readSyncValues(popupStorageKeys),
+    const [readValues] = await Promise.all([
+        readSyncValues([...popupStorageKeys, legacyGameColorsStorageKey]),
         removeSyncValues(legacyGroupStorageKeys)
     ]);
+    const savedValues = await migrateLegacyGameColors(readValues);
     loadBehaviorSettings(savedValues);
     loadSavedPageState(savedValues);
     loadDMToggleStates(savedValues);
     loadSavedColorPanelState(savedValues);
-    loadThemeState(savedValues[gameColorsStorageKey] || null);
+    loadThemeState(mergePanelThemes(savedValues));
 }
 
 // Reloads everything from storage after the settings page rewrites it to keep the user on the page they are looking at

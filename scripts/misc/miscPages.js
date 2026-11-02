@@ -253,6 +253,32 @@ function enableMiscPagesDarkMode() {
             border: 1px solid white;
             color: white;
         }
+
+        .StarterSet-module_heading__yRpL4, .StarterSet-module_tagline__YX4cc {
+            color: white;
+        }
+
+        .StarterSet-module_pill__BfkK8 {
+            background-color: white;
+            color: black;
+        }
+
+        .NextDropNotice-module_icon__dMPEu {
+            filter: invert(1);
+        }
+
+        .NextDropNotice-module_text__yhGjE {
+            color: white;
+        }
+
+        .SubscribeCard-module_card__E9n2N {
+            color: white;
+        }
+
+        .SubscribeCard-module_button__jy3BR {
+            border: 1px solid white;
+            color: white;
+        }
     `;  
     const style = document.createElement("style");
     style.id = "miscpagesstyle";

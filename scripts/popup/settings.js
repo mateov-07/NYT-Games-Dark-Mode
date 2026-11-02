@@ -4,8 +4,8 @@
 import {popupState} from "./states.js";
 import {
     popupStorageKeys, defaultPageStorageKey, defaultColorPanelStorageKey,
-    lastUsedOptionValue, githubUrl, changelogUrl, changelogDate, changelogNotes, supportEmail, gameUrlPrefix,
-    webStoreUrl,
+    lastUsedOptionValue, legacyGameColorsStorageKey,
+    githubUrl, changelogUrl, webStoreUrl, changelogDate, changelogNotes, supportEmail, gameUrlPrefix,
     pageButtons, colorPanelNames, syncDarkModeAction
 } from "./defaultExports.js";
 import {readSyncValues, writeSyncValue, writeSyncValues, removeSyncValues, sendMessageToActiveTab} from "./storage.js";
@@ -76,7 +76,7 @@ function openRestoreModal() {
         onConfirm: async (modal) => {
             const result = readSettingsCode(modal.code.value);
             if (result.error) return result;
-            await applyRestoredValues(result.values);
+            return applyRestoredValues(result.values);
         }
     });
 }
@@ -118,7 +118,7 @@ function readSettingsCode(code) {
         return {error: "Code came from a different version of the extension."};
     }
     const values = {};
-    for (const storageKey of popupStorageKeys) {
+    for (const storageKey of [...popupStorageKeys, legacyGameColorsStorageKey]) {
         if (payload.values?.[storageKey] === undefined) continue;
         values[storageKey] = payload.values[storageKey];
     }
@@ -132,14 +132,18 @@ function readSettingsCode(code) {
 async function applyRestoredValues(values) {
     const missingKeys = popupStorageKeys.filter((storageKey) => values[storageKey] === undefined);
     await removeSyncValues(missingKeys);
-    await writeSyncValues(values);
+    const result = await writeSyncValues(values);
+    if (result.error) return result;
     await refreshAfterStorageRewrite("Data restored successfully!");
+    return {};
 }
 
 // Drops every key the extension saves which leaves each one back at its built in default
 async function resetToDefaults() {
-    await removeSyncValues(popupStorageKeys);
+    const result = await removeSyncValues([...popupStorageKeys, legacyGameColorsStorageKey]);
+    if (result.error) return result;
     await refreshAfterStorageRewrite("Data reset successfully!");
+    return {};
 }
 
 // Pulls the rewritten storage back into the popup and tells the tab to catch up and show the confirmation toast
@@ -167,7 +171,8 @@ function attachChoiceGroup(selector, datasetKey, allowedValues, saveChoice) {
         choiceButton.addEventListener("click", async () => {
             const choiceValue = choiceButton.dataset[datasetKey];
             if (choiceValue !== lastUsedOptionValue && !allowedValues.includes(choiceValue)) return;
-            await saveChoice(choiceValue);
+            const result = await saveChoice(choiceValue);
+            if (result?.error) showHeaderToast(result.error, "error");
             updateAll();
         });
     });

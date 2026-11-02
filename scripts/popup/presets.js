@@ -80,7 +80,9 @@ export function saveThemeNow() {
         themeData[panelConfig.presetStorageField] = popupState.activePresets[panelName];
         themeData[panelConfig.activeKeyStorageField] = popupState.lastColorKeys[panelName];
     }
-    saveTheme(themeData);
+    saveTheme(themeData).then((result) => {
+        if (result.error) showHeaderToast(result.error, "error");
+    });
 }
 
 // Stores only the colors a custom preset changes from the light defaults

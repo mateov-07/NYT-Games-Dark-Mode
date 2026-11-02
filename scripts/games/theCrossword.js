@@ -51,6 +51,13 @@ function enableCrosswordDarkMode() {
             background-color: #e4e4e4;
         }
 
+        /* Puzzle Note */
+
+        .xwd__notes--content-container {
+            background-color: #222222;
+            border: 1px solid #333333;
+        }
+
         /* Main Sidebar */
 
         .pz-nav-drawer {
@@ -447,6 +454,30 @@ function enableCrosswordDarkMode() {
 
         .BonusHubCTA-module_card__WI1lq {
             color: black;
+        }
+
+        /* Not Logged In */
+
+        .dark-mode-overlay.xwd__modal--overlay {
+            background-color: #0f0f0f;
+        }
+
+        body .css-1n8f709.css-1n8f709.css-1n8f709 {
+            background: white;
+            color: black;
+        }
+
+        button.button-transparent {
+            color: white;
+            border: 1px solid white;
+        }
+
+        button.button-transparent:hover:enabled {
+            color: white;
+        }
+
+        .index-module_closeX__5hdrN {
+            color: white;
         }
     `;
     const style = document.createElement("style");

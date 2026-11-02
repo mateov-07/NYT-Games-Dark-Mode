@@ -78,14 +78,15 @@ function updateChoiceGroup(selector, datasetKey, activeValue) {
 // Timer that hides the confirmation toast, restarted whenever a new toast is shown
 let headerToastTimerId = null;
 
-// Flashes a short confirmation beside the popup's title once an action succeeds
-export function showHeaderToast(message) {
+// Shows a confirmation toast beside the popup's title or a red notice when the action failed
+export function showHeaderToast(message, variant = "success") {
     const toast = document.getElementById("headerToast");
     if (!toast) return;
     const toastText = toast.querySelector(".header-toast-text");
     if (toastText) {
         toastText.textContent = message;
     }
+    toast.classList.toggle("error", variant === "error");
     toast.classList.add("open");
     clearTimeout(headerToastTimerId);
     headerToastTimerId = setTimeout(() => {

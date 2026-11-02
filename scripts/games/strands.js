@@ -534,6 +534,35 @@ function enableStrandsDarkMode() {
         .BonusHubCTA-module_card__WI1lq {
             color: black;
         }
+
+        /* Not Logged In */
+
+        .dark-mode-overlay.xwd__modal--overlay {
+            background-color: #0f0f0f;
+        }
+
+        .xwd__modal--body.paywall-modal {
+            background-color: #0f0f0f;
+            color: white;
+        }
+
+        body .css-1n8f709.css-1n8f709.css-1n8f709 {
+            background: white;
+            color: black;
+        }
+
+        button.button-transparent {
+            color: white;
+            border: 1px solid white;
+        }
+
+        button.button-transparent:hover:enabled {
+            color: white;
+        }
+
+        .index-module_closeX__5hdrN {
+            color: white;
+        }
     `;
     const style = document.createElement("style");
     style.id = "strandsstyle";

@@ -391,7 +391,7 @@ function enableConnectionsDarkMode() {
             color: black;
         }
 
-        /* Track your Stats Not Logged In Popup */
+        /* Track your Stats + Not Logged In Popup */
 
         .pz-moment:has(.LoginPrompt-module_lireContainer__Iqekx) {
             background-color: #0f0f0f !important;
@@ -405,7 +405,24 @@ function enableConnectionsDarkMode() {
             filter: invert(1);
         }
 
+        .dark-mode-overlay.xwd__modal--overlay {
+            background-color: #0f0f0f;
+        }
+
+        .xwd__modal--body.paywall-modal {
+            background-color: #0f0f0f;
+        }
+
         .LoginPrompt-module_title__mWQeD, .LoginPrompt-module_subtitle__xO56q {
+            color: white;
+        }
+
+        body .css-1n8f709.css-1n8f709.css-1n8f709 {
+            background: white;
+            color: black;
+        }
+
+        .index-module_closeX__5hdrN {
             color: white;
         }
 

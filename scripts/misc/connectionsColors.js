@@ -1,5 +1,6 @@
 // Shared connections color layer, loaded before connections.js
-const gameColorsStorageKey = "gameColorSettings";
+const gameColorsStorageKey = "gameColorSettingsConnections";
+const legacyGameColorsStorageKey = "gameColorSettings";
 const cnPanelName = "connections";
 const cnActivePresetKey = "connectionsPreset";
 const applyGameColorsAction = "applyGameColors";
@@ -170,8 +171,8 @@ let connectionsDarkModeActive = false;
 
 // Loads the correct preset; if display then track dark mode toggles, if prebuilt then apply it, if custom then check saved one
 function loadStoredConnectionsColors() {
-    chrome.storage.sync.get(gameColorsStorageKey, (data) => {
-        const settings = data?.[gameColorsStorageKey] || {};
+    chrome.storage.sync.get([gameColorsStorageKey, legacyGameColorsStorageKey], (data) => {
+        const settings = data?.[gameColorsStorageKey] || data?.[legacyGameColorsStorageKey] || {};
         const preset = settings[cnActivePresetKey];
         if (prebuiltConnectionsPresetNames.includes(preset)) {
             applyConnectionsColors(prebuiltConnectionsColors[preset]);
@@ -211,7 +212,7 @@ chrome.runtime.onMessage.addListener(function(message) {
 
 // Listens for changes to the storage and reloads the colors if connections settings have changed
 chrome.storage.onChanged.addListener(function(changes, areaName) {
-    if (areaName === "sync" && gameColorsStorageKey in changes) {
+    if (areaName === "sync" && (gameColorsStorageKey in changes || legacyGameColorsStorageKey in changes)) {
         loadStoredConnectionsColors();
     }
 });

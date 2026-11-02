@@ -501,6 +501,30 @@ function enableMiniDarkMode() {
             border-right: 2px solid white;
             border-top: 2px solid white;
         }
+
+        /* Not Logged In */
+
+        .dark-mode-overlay.xwd__modal--overlay {
+            background-color: #0f0f0f;
+        }
+
+        body .css-1n8f709.css-1n8f709.css-1n8f709 {
+            background: white;
+            color: black;
+        }
+
+        button.button-transparent {
+            color: white;
+            border: 1px solid white;
+        }
+
+        button.button-transparent:hover:enabled {
+            color: white;
+        }
+
+        .index-module_closeX__5hdrN {
+            color: white;
+        }
     `;
     const style = document.createElement("style");
     style.id = "ministyle";

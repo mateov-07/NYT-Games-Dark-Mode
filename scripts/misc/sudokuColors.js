@@ -1,5 +1,6 @@
 // Shared sudoku color layer, loaded before sudoku.js
-const gameColorsStorageKey = "gameColorSettings";
+const gameColorsStorageKey = "gameColorSettingsSudoku";
+const legacyGameColorsStorageKey = "gameColorSettings";
 const sdPanelName = "sudoku";
 const sdActivePresetKey = "sudokuPreset";
 const applyGameColorsAction = "applyGameColors";
@@ -206,8 +207,8 @@ let sudokuDarkModeActive = false;
 
 // Loads the correct preset; if display then track dark mode toggles, if prebuilt then apply it, if custom then check saved one
 function loadStoredSudokuColors() {
-    chrome.storage.sync.get(gameColorsStorageKey, (data) => {
-        const settings = data?.[gameColorsStorageKey] || {};
+    chrome.storage.sync.get([gameColorsStorageKey, legacyGameColorsStorageKey], (data) => {
+        const settings = data?.[gameColorsStorageKey] || data?.[legacyGameColorsStorageKey] || {};
         const preset = settings[sdActivePresetKey];
         if (prebuiltSudokuPresetNames.includes(preset)) {
             applySudokuColors(prebuiltSudokuColors[preset]);
@@ -247,7 +248,7 @@ chrome.runtime.onMessage.addListener(function(message) {
 
 // Listens for changes to the storage and reloads the colors if sudoku settings have changed
 chrome.storage.onChanged.addListener(function(changes, areaName) {
-    if (areaName === "sync" && gameColorsStorageKey in changes) {
+    if (areaName === "sync" && (gameColorsStorageKey in changes || legacyGameColorsStorageKey in changes)) {
         loadStoredSudokuColors();
     }
 });

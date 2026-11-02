@@ -1,7 +1,7 @@
 {
   "name": "Dark Mode for NYT Games",
   "description": "Adds a toggleable dark mode to all NYT Games plus color customization options for Crosswords, Sudoku, Wordle and Connections.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "manifest_version": 3,
   "permissions": ["activeTab", "storage", "clipboardRead", "clipboardWrite"],
   "action": {
@@ -18,7 +18,8 @@
       "matches": ["https://www.nytimes.com/crosswords/game/daily*",
                   "https://www.nytimes.com/crosswords/game/bonus*",
                   "https://www.nytimes.com/games/bonus/crossword/monthly/*",
-                  "https://www.nytimes.com/games/bonus/crossword/easy-mode/*"],
+                  "https://www.nytimes.com/games/bonus/crossword/easy-mode/*",
+                  "https://www.nytimes.com/games/bonus/crossword/standard/*"],
       "js": ["scripts/misc/crosswordColors.js", "scripts/games/theCrossword.js"],
       "run_at": "document_start"
     }, {

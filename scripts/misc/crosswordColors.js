@@ -1,5 +1,6 @@
 // Shared crossword color layer, loaded before all three crossword.js
-const gameColorsStorageKey = "gameColorSettings";
+const gameColorsStorageKey = "gameColorSettingsCrosswords";
+const legacyGameColorsStorageKey = "gameColorSettings";
 const cwPanelName = "crosswords";
 const cwActivePresetKey = "crosswordPreset";
 const applyGameColorsAction = "applyGameColors";
@@ -206,8 +207,8 @@ let crosswordDarkModeActive = false;
 
 // Loads the correct preset; if display then track dark mode toggles, if prebuilt then apply it, if custom then check saved one
 function loadStoredCrosswordColors() {
-    chrome.storage.sync.get(gameColorsStorageKey, (data) => {
-        const settings = data?.[gameColorsStorageKey] || {};
+    chrome.storage.sync.get([gameColorsStorageKey, legacyGameColorsStorageKey], (data) => {
+        const settings = data?.[gameColorsStorageKey] || data?.[legacyGameColorsStorageKey] || {};
         const preset = settings[cwActivePresetKey];
         if (prebuiltCrosswordPresetNames.includes(preset)) {
             applyCrosswordColors(prebuiltCrosswordColors[preset]);
@@ -247,7 +248,7 @@ chrome.runtime.onMessage.addListener(function(message) {
 
 // Listens for changes to the storage and reloads the colors if crossword settings have changed
 chrome.storage.onChanged.addListener(function(changes, areaName) {
-    if (areaName === "sync" && gameColorsStorageKey in changes) {
+    if (areaName === "sync" && (gameColorsStorageKey in changes || legacyGameColorsStorageKey in changes)) {
         loadStoredCrosswordColors();
     }
 });
