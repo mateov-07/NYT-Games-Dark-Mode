@@ -25,9 +25,9 @@ function enableTAConnectionsDarkMode() {
         /* Menu Sidebar */
 
         .Nav_drawer__zUJBS {
-            background-color: #0f0f0f;
+            background-color: #1b1b1b;
             color: white;
-            scrollbar-color: white #0f0f0f;
+            scrollbar-color: white #1b1b1b;
         }
 
         .Nav_navItem__c5wKU {
@@ -35,7 +35,7 @@ function enableTAConnectionsDarkMode() {
         }
 
         .Nav_navItemWrapper__9FfdP:hover {
-            background-color: #777777;
+            background-color: #2f2f31;
         }
 
         .Nav_icon-connections__2rfhc {
@@ -43,7 +43,29 @@ function enableTAConnectionsDarkMode() {
             border-radius: 20%;
         }
 
-        .Nav_icon-nyt__Fw6mx {
+        .Nav_icon-nyt__Fw6mx,
+        .Nav_icon-sports-coach__CY6SH,
+        .Nav_icon-athletic__T3FtL {
+            filter: invert(1);
+        }
+
+        .Nav_footerItem__QhmuK:hover {
+            color: white;
+        }
+        
+        /* Footer */
+
+        .SoccerEditionEntryPoint_EntryPointLink__qpIiR {
+            background-color: #121212;
+            border-top: 1px solid white;
+        }
+
+        .SoccerEditionEntryPoint_MainText__pV09N h3,
+        .SoccerEditionEntryPoint_MainText__pV09N .SoccerEditionEntryPoint_SubText__ti9r3 {
+            color: white;
+        }
+
+        .SoccerEditionEntryPoint_EntryPointWrapper__71cPL img[alt="chevron right"] {
             filter: invert(1);
         }
 

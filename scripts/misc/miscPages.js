@@ -177,6 +177,20 @@ function enableMiscPagesDarkMode() {
             background-color: #e4e4e4;
         }
 
+        .SponsoredCollectionCTA-module_container___hmRf {
+            background-color: #101010;
+        }
+
+        .SponsoredCollectionCTA-module_textContainer__bXeto h2, 
+        .SponsoredCollectionCTA-module_textContainer__bXeto p {
+            color: white;
+        }
+
+        .SponsoredCollectionCTA-module_ctaText__hmIQ5 {
+            background-color: white;
+            color: black;
+        }
+
         /* Ads + Loading Bar + Footer */
 
         .pz-ad-box {
@@ -277,6 +291,15 @@ function enableMiscPagesDarkMode() {
 
         .SubscribeCard-module_button__jy3BR {
             border: 1px solid white;
+            color: white;
+        }
+
+        /* ------------------------ */
+        /* PAGE 3: GAMES COLLECTION */
+        /* ------------------------ */
+
+        .CollectionPage-module_collectionContainer__Ci_Uh h1,
+        .CollectionPage-module_descriptionOut__Q0Z_6 {
             color: white;
         }
     `;  

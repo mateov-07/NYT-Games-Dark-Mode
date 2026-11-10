@@ -178,6 +178,20 @@ function enableSpellingBeeArchiveDarkMode() {
             background-color: #e4e4e4;
         }
 
+        .SponsoredCollectionCTA-module_container___hmRf {
+            background-color: #101010;
+        }
+
+        .SponsoredCollectionCTA-module_textContainer__bXeto h2, 
+        .SponsoredCollectionCTA-module_textContainer__bXeto p {
+            color: white;
+        }
+
+        .SponsoredCollectionCTA-module_ctaText__hmIQ5 {
+            background-color: white;
+            color: black;
+        }
+
         /* Ads + Loading Bar + Footer */
 
         .pz-ad-box {

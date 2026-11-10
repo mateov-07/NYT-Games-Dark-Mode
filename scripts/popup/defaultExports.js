@@ -28,13 +28,13 @@ export const changelogUrl = "https://github.com/mateov-07/NYT-Games-Dark-Mode/re
 export const webStoreUrl = "https://chromewebstore.google.com/detail/dark-mode-for-nyt-games/iblanhgliilkajljllnagnbemlcmdpod";
 
 // Version publish date shown in the top right of the changelog dialog
-export const changelogDate = "November 2nd 2026";
+export const changelogDate = "November 9th 2026";
 
 // Notes shown in the changelog dialog, updated with every release
 export const changelogNotes = [
-    "Updated chrome saving to avoid hitting storage limits for custom colors.",
-    "Fixed crossword, connections, strands coloring for congrats and paywall screens.",
-    "Fixed icon/bg coloring for bonus puzzles within the main menu."
+    "Added support to game collections (via misc pages).",
+    "Fixed a focus bug when clicking on the print tool in the main menu page.",
+    "Improved coloring to The Athletic Connections and added support to its soccer version."
 ];
 
 // Email address that bug reports, feedback and questions are sent to
